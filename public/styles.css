@@ -1,0 +1,89 @@
+@font-face {
+    font-family: "IRANSans";
+    src: url("IRANSansXFaNum-Regular.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+  }
+
+body {
+    background-color: #121212;
+    color: #ffffff;
+    font-family: IRANSans, sans-serif;
+    direction: rtl;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+h1 {
+    text-align: center;
+    color: #ffd700;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th, td {
+    font-size: 10px;
+    padding: 12px;
+    text-align: center;
+    border-bottom: 1px solid #444;
+}
+
+th {
+    background-color: #333;
+    color: #ffd700;
+}
+
+tr:hover {
+    background-color: #1e1e1e;
+}
+
+.green {
+    color: #4caf50;
+}
+
+.red {
+    color: #ff5722;
+}
+#refreshButton {
+    font-family: "IRANSans";
+    background-color: #ffd700;
+    color: #121212;
+    border: none;
+    padding: 8px 15px;
+    font-size: 14px;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-top: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px; 
+    margin-left: auto;
+    margin-right: auto;
+    transition: background-color 0.3s ease;
+}
+
+#refreshButton:hover {
+    background-color: #e6b800;
+}
+
+#refreshButton:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+}
+
+.spinner {
+    display: inline-block;
+}
+
+.hidden {
+    display: none;
+}

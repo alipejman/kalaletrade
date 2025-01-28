@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>قیمت طلا | کلاله ترید</title>
+    <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>قیمت طلا | کلاله ترید</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>قیمت (تومان)</th>
+                    <th>تغییرات</th>
+                    <th>حباب (تومان)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% goldData.forEach(item => { %>
+                    <tr>
+                        <td><%= item.title %></td>
+                        <td><%= item.price %></td>
+                        <td><%= item.change %></td>
+                        <td><%= item.bubble %></td>
+                    </tr>
+                <% }) %>
+            </tbody>
+        </table>
+        <button id="refreshButton">
+            <span id="buttonText">بروزرسانی داده‌ها</span>
+            <span id="spinner" class="spinner hidden"><i class="fas fa-spinner fa-spin"></i></span>
+        </button>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            $('#refreshButton').click(function() {
+                $('#spinner').removeClass('hidden');
+                $('#buttonText').text('در حال بروزرسانی...');
+                $('#refreshButton').prop('disabled', true);
+
+                $.ajax({
+                    url: '/refresh',
+                    method: 'GET',
+                    success: function(data) {
+                        $('tbody').empty();
+                        data.forEach(function(item) {
+                            $('tbody').append(
+                                `<tr>
+                                    <td>${item.title}</td>
+                                    <td>${item.price}</td>
+                                    <td>${item.change}</td>
+                                    <td>${item.bubble}</td>
+                                </tr>`
+                            );
+                        });
+                    },
+                    error: function() {
+                        alert('خطا در بروزرسانی داده‌ها');
+                    },
+                    complete: function() {
+                        $('#spinner').addClass('hidden');
+                        $('#buttonText').text('بروزرسانی داده‌ها');
+                        $('#refreshButton').prop('disabled', false);
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
