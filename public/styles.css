@@ -74,15 +74,15 @@ table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
-    border-radius: 8px;
     text-align: right;
 
 }
 
 tr{
-    background-color: #f9f5f5;
+    background-color: #ece8e8;
     color: #3d3d3d;
     text-align: right;
+    border-radius: 8px;
 
 }
 
@@ -91,7 +91,7 @@ th, td {
     font-size: 12px;
     padding: 12px;
     text-align: right;
-    border-bottom: 1px solid #b6b5b5;
+    border-bottom: 1px solid #f2f1f1;
 }
 
 th {
