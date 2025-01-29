@@ -88,9 +88,9 @@ tr{
 
 th, td {
     text-align: right;
-    font-size: 14px;
+    font-size: 12px;
     padding: 12px;
-    text-align: center;
+    text-align: right;
     border-bottom: 1px solid #b6b5b5;
 }
 
