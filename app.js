@@ -1,3 +1,17 @@
+const express = require('express');
+const axios = require('axios');
+const cheerio = require('cheerio');
+const moment = require('moment-jalaali');
+
+const app = express();
+const PORT = 4000;
+
+
+
+app.set('view engine', 'ejs');
+app.use(express.static('public'));
+
+let lastUpdated = moment().format('jYYYY/jMM/jDD - HH:mm:ss'); // زمان اولیه
 app.get('/', async (req, res) => {
     try {
         const goldData = await fetchGoldData();
@@ -69,3 +83,9 @@ async function fetchCryptoData() {
         throw new Error('خطا در دریافت داده‌های ارز دیجیتال. لطفا دوباره تلاش کنید.');
     }
 }
+
+
+
+app.listen(PORT, () => {
+    console.log(`Server is running on http://localhost:${PORT}`);
+});
