@@ -1,172 +1,176 @@
-<!DOCTYPE html>
-<html lang="fa" dir="rtl">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>قیمت طلا و ارزهای دیجیتال | کلاله ترید</title>
-    <link rel="stylesheet" href="/styles.css" />
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
-    />
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
-    <style>
-      .loading-skeleton {
-  height: 20px;
-  background: linear-gradient(90deg, #313030 25%, #555 50%, #313030 75%);
-  background-size: 200% 100%;
-  animation: loading 1.5s infinite;
-  margin: 8px 0;
-  border-radius: 10px;
-}
+    <!DOCTYPE html>
+    <html lang="fa" dir="rtl">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>قیمت طلا و ارزهای دیجیتال | کلاله ترید</title>
+        <link rel="stylesheet" href="/styles.css" />
+        <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+        />
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+        <style>
+        .loading-skeleton {
+    height: 20px;
+    background: linear-gradient(90deg, #d3d2d2 25%, #faf9f9 50%, #d3d2d2 75%);
+    background-size: 200% 100%;
+    animation: loading 1.5s infinite;
+    margin: 8px 0;
+    border-radius: 10px;
+    }
 
-@keyframes loading {
-  0% {
-    background-position: 200% 0;
-  }
-  100% {
-    background-position: 0 0;
-  }
-}
-    </style>
-  </head>
-  <body>
-    <div class="overlay"></div>
-    <div class="container">
-      <div id="app">
-        <h1>نرخ روز | کلاله ترید</h1>
-        <p>
-          آخرین زمان بروزرسانی: <span id="lastUpdated">{{ lastUpdated }}</span>
-        </p>
+    @keyframes loading {
+    0% {
+        background-position: 200% 0;
+    }
+    100% {
+        background-position: 0 0;
+    }
+    }
+        </style>
+    </head>
+    <body>
+        <div class="fixed-background"></div>
 
-        <h2>قیمت طلا</h2>
-        <table>
-          <thead>
-            <tr>
-              <th></th>
-              <th>قیمت (تومان)</th>
-              <th>تغییرات</th>
-              <th>حباب (تومان)</th>
-            </tr>
-          </thead>
-          <tbody>
-            <template v-if="isLoading">
-              <tr v-for="n in 5" :key="n">
-                <td><div class="loading-skeleton"></div></td>
-                <td><div class="loading-skeleton"></div></td>
-                <td><div class="loading-skeleton"></div></td>
-                <td><div class="loading-skeleton"></div></td>
-              </tr>
-            </template>
-            <template v-else>
-              <tr v-for="item in goldData" :key="item.title">
-                <td>{{ item.title }}</td>
-                <td>{{ item.price }}</td>
-                <td>{{ item.change }}</td>
-                <td>{{ item.bubble }}</td>
-              </tr>
-            </template>
-          </tbody>
-        </table>
+        <div class="overlay"></div>
+        <div class="container">
+        <div id="app">
+            <div class="wrapper-header">
+                <h1>نرخ روز |</h1>
+                <img src="/upsite_1737463211_kalaletrade-profile.png"></img>
+            </div>
+            <p>
+            آخرین زمان بروزرسانی: <span id="lastUpdated">{{ lastUpdated }}</span>
+            </p>
+            <button id="refreshButton" @click="refreshData">
+                <span id="buttonText">بروزرسانی جدول ها</span>
+                <span id="spinner" class="spinner hidden"
+                ><i class="fas fa-spinner fa-spin"></i
+                ></span>
+            </button>
 
-        <h2>قیمت ارزهای دیجیتال</h2>
-        <table>
-          <thead>
-            <tr>
-              <th></th>
-              <th>قیمت (تومان)</th>
-              <th>قیمت (دلار)</th>
-              <th>تغییرات</th>
-            </tr>
-          </thead>
-          <tbody class="crypto">
-            <template v-if="isLoading">
-              <tr v-for="n in 5" :key="n">
-                <td><div class="loading-skeleton"></div></td>
-                <td><div class="loading-skeleton"></div></td>
-                <td><div class="loading-skeleton"></div></td>
-                <td><div class="loading-skeleton"></div></td>
-              </tr>
-            </template>
-            <template v-else>
-              <tr v-for="item in cryptoData" :key="item.titleEnglish">
-                <td>
-                  <img
-                    :src="getIcon(item.titleEnglish)"
-                    alt="Crypto Icon"
-                    style="width: 20px; height: 20px; vertical-align: middle"
-                  />
-                  {{ item.titlePersian }} ({{ item.titleEnglish }})
-                </td>
-                <td>{{ item.priceToman }}</td>
-                <td>{{ item.priceDollar }}</td>
-                <td>{{ item.change }}</td>
-              </tr>
-            </template>
-          </tbody>
-        </table>
+            <h2>قیمت طلا</h2>
+            <table>
+            <thead>
+                <tr>
+                <th></th>
+                <th>قیمت (تومان)</th>
+                <th>تغییرات</th>
+                <th>حباب (تومان)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <template v-if="isLoading">
+                <tr v-for="n in 5" :key="n">
+                    <td><div class="loading-skeleton"></div></td>
+                    <td><div class="loading-skeleton"></div></td>
+                    <td><div class="loading-skeleton"></div></td>
+                    <td><div class="loading-skeleton"></div></td>
+                </tr>
+                </template>
+                <template v-else>
+                <tr v-for="item in goldData" :key="item.title">
+                    <td>{{ item.title }}</td>
+                    <td>{{ item.price }}</td>
+                    <td>{{ item.change }}</td>
+                    <td>{{ item.bubble }}</td>
+                </tr>
+                </template>
+            </tbody>
+            </table>
 
-        <button id="refreshButton" @click="refreshData">
-          <span id="buttonText">بروزرسانی داده‌ها</span>
-          <span id="spinner" class="spinner hidden"
-            ><i class="fas fa-spinner fa-spin"></i
-          ></span>
-        </button>
-      </div>
-    </div>
-    <script>
-      new Vue({
-        el: "#app",
-        data: {
-          isLoading: true,
-          lastUpdated: "",
-          goldData: [],
-          cryptoData: [],
-        },
-        methods: {
-          refreshData() {
-            this.isLoading = true;
-            $.ajax({
-              url: "/refresh",
-              method: "GET",
-              success: (data) => {
-                this.goldData = data.goldData;
-                this.cryptoData = data.cryptoData;
-                this.lastUpdated = data.lastUpdated;
-              },
-              error: () => {
-                alert("خطا در بروزرسانی داده‌ها");
-              },
-              complete: () => {
-                this.isLoading = false;
-              },
-            });
-          },
-          getIcon(titleEnglish) {
-            // تابعی برای برگرداندن آیکون بر اساس نام ارز دیجیتال
-            if (titleEnglish.includes("btc")) return "/icons/btc.svg";
-            if (titleEnglish.includes("ethereum")) return "/icons/eth.svg";
-            if (titleEnglish.includes("ltc")) return "/icons/ltc.svg";
-            if (titleEnglish.includes("doge")) return "/icons/doge.svg";
-            if (titleEnglish.includes("xmr")) return "/icons/xmr.svg";
-            if (titleEnglish.includes("trx")) return "/icons/trx.svg";
-            if (titleEnglish.includes("usdt")) return "/icons/usdt.svg";
-            if (titleEnglish.includes("bnb")) return "/icons/bnb.svg";
-            if (titleEnglish.includes("shiba")) return "/icons/shib.svg";
-            if (titleEnglish.includes("ada")) return "/icons/ada.svg";
-            if (titleEnglish.includes("bch")) return "/icons/bch.svg";
-            if (titleEnglish.includes("dai")) return "/icons/dai.svg";
-            if (titleEnglish.includes("etc")) return "/icons/etc.svg";
-            if (titleEnglish.includes("uni")) return "/icons/uni.svg";
-            if (titleEnglish.includes("link")) return "/icons/link.svg";
-            return ""; // در صورتی که آیکون پیدا نشود
-          },
-        },
-        mounted() {
-          this.refreshData(); // بارگذاری اولیه داده‌ها
-        },
-      });
-    </script>
-  </body>
-</html>
+            <h2>قیمت ارزهای دیجیتال</h2>
+            <table>
+            <thead>
+                <tr>
+                <th></th>
+                <th>قیمت (تومان)</th>
+                <th>قیمت (دلار)</th>
+                <th>تغییرات</th>
+                </tr>
+            </thead>
+            <tbody class="crypto">
+                <template v-if="isLoading">
+                <tr v-for="n in 5" :key="n">
+                    <td><div class="loading-skeleton"></div></td>
+                    <td><div class="loading-skeleton"></div></td>
+                    <td><div class="loading-skeleton"></div></td>
+                    <td><div class="loading-skeleton"></div></td>
+                </tr>
+                </template>
+                <template v-else>
+                <tr v-for="item in cryptoData" :key="item.titleEnglish">
+                    <td>
+                    <img
+                        :src="getIcon(item.titleEnglish)"
+                        alt="Crypto Icon"
+                        style="width: 20px; height: 20px; vertical-align: middle"
+                    />
+                    {{ item.titlePersian }} ({{ item.titleEnglish }})
+                    </td>
+                    <td>{{ item.priceToman }}</td>
+                    <td>{{ item.priceDollar }}</td>
+                    <td>{{ item.change }}</td>
+                </tr>
+                </template>
+            </tbody>
+            </table>
+        </div>
+        </div>
+        <script>
+        new Vue({
+            el: "#app",
+            data: {
+            isLoading: true,
+            lastUpdated: "",
+            goldData: [],
+            cryptoData: [],
+            },
+            methods: {
+            refreshData() {
+                this.isLoading = true;
+                $.ajax({
+                url: "/refresh",
+                method: "GET",
+                success: (data) => {
+                    this.goldData = data.goldData;
+                    this.cryptoData = data.cryptoData;
+                    this.lastUpdated = data.lastUpdated;
+                },
+                error: () => {
+                    alert("خطا در بروزرسانی داده‌ها");
+                },
+                complete: () => {
+                    this.isLoading = false;
+                },
+                });
+            },
+            getIcon(titleEnglish) {
+                // تابعی برای برگرداندن آیکون بر اساس نام ارز دیجیتال
+                if (titleEnglish.includes("btc")) return "/icons/btc.svg";
+                if (titleEnglish.includes("ethereum")) return "/icons/eth.svg";
+                if (titleEnglish.includes("ltc")) return "/icons/ltc.svg";
+                if (titleEnglish.includes("doge")) return "/icons/doge.svg";
+                if (titleEnglish.includes("xmr")) return "/icons/xmr.svg";
+                if (titleEnglish.includes("trx")) return "/icons/trx.svg";
+                if (titleEnglish.includes("usdt")) return "/icons/usdt.svg";
+                if (titleEnglish.includes("bnb")) return "/icons/bnb.svg";
+                if (titleEnglish.includes("shiba")) return "/icons/shib.svg";
+                if (titleEnglish.includes("ada")) return "/icons/ada.svg";
+                if (titleEnglish.includes("bch")) return "/icons/bch.svg";
+                if (titleEnglish.includes("dai")) return "/icons/dai.svg";
+                if (titleEnglish.includes("etc")) return "/icons/etc.svg";
+                if (titleEnglish.includes("uni")) return "/icons/uni.svg";
+                if (titleEnglish.includes("link")) return "/icons/link.svg";
+                return ""; // در صورتی که آیکون پیدا نشود
+            },
+            },
+            mounted() {
+            this.refreshData(); // بارگذاری اولیه داده‌ها
+            },
+        });
+        </script>
+    </body>
+    </html>

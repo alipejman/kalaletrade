@@ -6,15 +6,27 @@
   }
 
   body {
-    background-color: #121212;
+    background-color: #fcfcfc;
     color: #ffffff;
     font-family: IRANSans, sans-serif;
     direction: rtl;
-    background-image: url("flashlight-beam-effect-realistic-light-illumination-mockup_53562-15374.avif");
+    background-image: url("");
     background-size: cover; /* تصویر پس‌زمینه را به اندازه کامل صفحه تنظیم می‌کند */
     background-position: center; /* تصویر را در مرکز صفحه قرار می‌دهد */
     position: relative; /* برای استفاده از لایه overlay */
     margin: 0;
+}
+
+.fixed-background {
+    position: fixed; /* تصویر را به صورت ثابت قرار می‌دهد */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 300px;
+    background-image: url("world_map_czgdhz_hkfmou.avif"); /* تصویر جدید */
+    background-size: contain; /* تصویر را به اندازه کامل صفحه تنظیم می‌کند */
+    background-position: center; /* تصویر را در مرکز قرار می‌دهد */
+    z-index: -1; /* تصویر را در پس‌زمینه قرار می‌دهد */
 }
 
 .overlay {
@@ -23,44 +35,72 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5); /* رنگ سیاه با شفافیت 50% */
+    background-color: rgba(133, 132, 132, 0.416); /* رنگ سیاه با شفافیت 50% */
     z-index: -1; /* لایه overlay را بالای تصویر قرار می‌دهد */
 }
 
 .container {
-    max-width: 800px;
+    max-width: 100%;
     margin: 0 auto;
     padding: 20px;
     position: relative; /* برای قرار دادن محتوای داخل container بالای overlay */
     z-index: 2; /* محتوای داخل container را بالای overlay قرار می‌دهد */
 }
 
+.wrapper-header{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
 
 h1 {
     text-align: center;
-    color: #ffd700;
+    color: #DC0001;
+}
+
+img{
+    width: 150px;
+    height: 100px;
+}
+
+p{
+    color: rgb(0, 0, 0);
+    font-size: 16px;
+    font-weight: bold;
 }
 
 table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
+    border-radius: 8px;
+    text-align: right;
+
+}
+
+tr{
+    background-color: #f9f5f5;
+    color: #3d3d3d;
+    text-align: right;
+
 }
 
 th, td {
-    font-size: 10px;
+    text-align: right;
+    font-size: 14px;
     padding: 12px;
     text-align: center;
-    border-bottom: 1px solid #444;
+    border-bottom: 1px solid #b6b5b5;
 }
 
 th {
-    background-color: #333;
-    color: #ffd700;
+    background-color: #ecebeb;
+    color: #DC0001;
 }
 
 tr:hover {
-    background-color: #1e1e1e;
+    background-color: #e0e0e0;
 }
 
 .green {
@@ -72,8 +112,8 @@ tr:hover {
 }
 #refreshButton {
     font-family: "IRANSans";
-    background-color: #ffd700;
-    color: #121212;
+    background-color: #DC0001;
+    color: #f8f6f6;
     border: none;
     padding: 8px 15px;
     font-size: 14px;
@@ -90,7 +130,7 @@ tr:hover {
 }
 
 #refreshButton:hover {
-    background-color: #e6b800;
+    background-color: #bf0101;
 }
 
 #refreshButton:disabled {
