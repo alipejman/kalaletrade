@@ -9,7 +9,6 @@
         rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
         />
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
         <style>
         .loading-skeleton {
@@ -120,57 +119,60 @@
         </div>
         </div>
         <script>
-        new Vue({
-            el: "#app",
-            data: {
-            isLoading: true,
-            lastUpdated: "",
-            goldData: [],
-            cryptoData: [],
-            },
-            methods: {
-            refreshData() {
-                this.isLoading = true;
-                $.ajax({
-                url: "/refresh",
-                method: "GET",
-                success: (data) => {
-                    this.goldData = data.goldData;
-                    this.cryptoData = data.cryptoData;
-                    this.lastUpdated = data.lastUpdated;
+            new Vue({
+                el: "#app",
+                data: {
+                    isLoading: true,
+                    lastUpdated: "",
+                    goldData: [],
+                    cryptoData: [],
                 },
-                error: () => {
-                    alert("خطا در بروزرسانی داده‌ها");
+                methods: {
+                    async refreshData() {
+                        this.isLoading = true;
+                        try {
+                            const response = await fetch("/refresh");
+                            const data = await response.json();
+                            this.goldData = data.goldData;
+                            this.cryptoData = data.cryptoData;
+                            this.lastUpdated = data.lastUpdated;
+                        } catch (error) {
+                            alert("خطا در بروزرسانی داده‌ها");
+                        } finally {
+                            this.isLoading = false;
+                        }
+                    },
+                    getIcon(titleEnglish) {
+                        // تابعی برای برگرداندن آیکون بر اساس نام ارز دیجیتال
+                        const icons = {
+                            btc: "/icons/btc.svg",
+                            ethereum: "/icons/eth.svg",
+                            ltc: "/icons/ltc.svg",
+                            doge: "/icons/doge.svg",
+                            xmr: "/icons/xmr.svg",
+                            trx: "/icons/trx.svg",
+                            usdt: "/icons/usdt.svg",
+                            bnb: "/icons/bnb.svg",
+                            shiba: "/icons/shib.svg",
+                            ada: "/icons/ada.svg",
+                            bch: "/icons/bch.svg",
+                            dai: "/icons/dai.svg",
+                            etc: "/icons/etc.svg",
+                            uni: "/icons/uni.svg",
+                            link: "/icons/link.svg",
+                        };
+                        for (const key in icons) {
+                            if (titleEnglish.includes(key)) {
+                                return icons[key];
+                            }
+                        }
+                        return ""; // در صورتی که آیکون پیدا نشود
+                    },
                 },
-                complete: () => {
-                    this.isLoading = false;
+                mounted() {
+                    this.refreshData(); // بارگذاری اولیه داده‌ها
                 },
-                });
-            },
-            getIcon(titleEnglish) {
-                // تابعی برای برگرداندن آیکون بر اساس نام ارز دیجیتال
-                if (titleEnglish.includes("btc")) return "/icons/btc.svg";
-                if (titleEnglish.includes("ethereum")) return "/icons/eth.svg";
-                if (titleEnglish.includes("ltc")) return "/icons/ltc.svg";
-                if (titleEnglish.includes("doge")) return "/icons/doge.svg";
-                if (titleEnglish.includes("xmr")) return "/icons/xmr.svg";
-                if (titleEnglish.includes("trx")) return "/icons/trx.svg";
-                if (titleEnglish.includes("usdt")) return "/icons/usdt.svg";
-                if (titleEnglish.includes("bnb")) return "/icons/bnb.svg";
-                if (titleEnglish.includes("shiba")) return "/icons/shib.svg";
-                if (titleEnglish.includes("ada")) return "/icons/ada.svg";
-                if (titleEnglish.includes("bch")) return "/icons/bch.svg";
-                if (titleEnglish.includes("dai")) return "/icons/dai.svg";
-                if (titleEnglish.includes("etc")) return "/icons/etc.svg";
-                if (titleEnglish.includes("uni")) return "/icons/uni.svg";
-                if (titleEnglish.includes("link")) return "/icons/link.svg";
-                return ""; // در صورتی که آیکون پیدا نشود
-            },
-            },
-            mounted() {
-            this.refreshData(); // بارگذاری اولیه داده‌ها
-            },
-        });
+            });
         </script>
     </body>
     </html>
