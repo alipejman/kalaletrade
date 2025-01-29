@@ -5,18 +5,36 @@
     font-style: normal;
   }
 
-body {
+  body {
     background-color: #121212;
     color: #ffffff;
     font-family: IRANSans, sans-serif;
     direction: rtl;
+    background-image: url("flashlight-beam-effect-realistic-light-illumination-mockup_53562-15374.avif");
+    background-size: cover; /* تصویر پس‌زمینه را به اندازه کامل صفحه تنظیم می‌کند */
+    background-position: center; /* تصویر را در مرکز صفحه قرار می‌دهد */
+    position: relative; /* برای استفاده از لایه overlay */
+    margin: 0;
+}
+
+.overlay {
+    position: absolute; /* لایه overlay را به صورت مطلق قرار می‌دهد */
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5); /* رنگ سیاه با شفافیت 50% */
+    z-index: -1; /* لایه overlay را بالای تصویر قرار می‌دهد */
 }
 
 .container {
     max-width: 800px;
     margin: 0 auto;
     padding: 20px;
+    position: relative; /* برای قرار دادن محتوای داخل container بالای overlay */
+    z-index: 2; /* محتوای داخل container را بالای overlay قرار می‌دهد */
 }
+
 
 h1 {
     text-align: center;
