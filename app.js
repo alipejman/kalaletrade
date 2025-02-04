@@ -2,7 +2,6 @@ const express = require('express');
 const axios = require('axios');
 const cheerio = require('cheerio');
 const moment = require('moment-jalaali');
-
 const app = express();
 const PORT = 4000;
 
@@ -10,6 +9,8 @@ const PORT = 4000;
 
 app.set('view engine', 'ejs');
 app.use(express.static('public'));
+app.set('title', 'My Site')
+app.get('title') // "My Site"
 
 let lastUpdated = moment().format('jYYYY/jMM/jDD - HH:mm:ss'); // زمان اولیه
 app.get('/', async (req, res) => {

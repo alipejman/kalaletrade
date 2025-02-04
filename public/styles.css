@@ -3,71 +3,97 @@
     src: url("IRANSansXFaNum-Regular.ttf") format("truetype");
     font-weight: normal;
     font-style: normal;
-  }
+}
 
-  body {
+body {
     background-color: #fcfcfc;
-    color: #ffffff;
+    color: #333;
     font-family: IRANSans, sans-serif;
     direction: rtl;
-    background-image: url("");
-    background-size: cover; /* تصویر پس‌زمینه را به اندازه کامل صفحه تنظیم می‌کند */
-    background-position: center; /* تصویر را در مرکز صفحه قرار می‌دهد */
-    position: relative; /* برای استفاده از لایه overlay */
     margin: 0;
+    padding: 0;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+[data-theme="dark"] body {
+    background-color: #121212;
+    color: #ffffff;
 }
 
 .fixed-background {
-    position: fixed; /* تصویر را به صورت ثابت قرار می‌دهد */
+    position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 300px;
-    background-image: url("world_map_czgdhz_hkfmou.avif"); /* تصویر جدید */
-    background-size: contain; /* تصویر را به اندازه کامل صفحه تنظیم می‌کند */
-    background-position: center; /* تصویر را در مرکز قرار می‌دهد */
-    z-index: -1; /* تصویر را در پس‌زمینه قرار می‌دهد */
+    background-image: url("world_map_czgdhz_hkfmou.avif");
+    background-size: cover;
+    background-position: center;
+    z-index: -1;
 }
 
 .overlay {
-    position: absolute; /* لایه overlay را به صورت مطلق قرار می‌دهد */
+    position: fixed;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(133, 132, 132, 0.416); /* رنگ سیاه با شفافیت 50% */
-    z-index: -1; /* لایه overlay را بالای تصویر قرار می‌دهد */
+    background-color: rgba(133, 132, 132, 0.416);
+    z-index: -1;
 }
 
 .container {
-    max-width: 95%;
+    max-width: 1200px;
     margin: 0 auto;
     padding: 20px;
-    position: relative; /* برای قرار دادن محتوای داخل container بالای overlay */
-    z-index: 2; /* محتوای داخل container را بالای overlay قرار می‌دهد */
+    position: relative;
+    z-index: 2;
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s, color 0.3s;
 }
 
-.wrapper-header{
+[data-theme="dark"] .container {
+    background-color: rgba(18, 18, 18, 0.9);
+    color: #ffffff;
+}
+
+.wrapper-header {
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
+    margin-bottom: 20px;
 }
 
 h1 {
     text-align: center;
     color: #DC0001;
+    font-size: 24px;
+    margin: 0;
 }
 
-img{
+img {
     width: 150px;
     height: 100px;
+    margin-right: 10px;
 }
 
-p{
-    color: rgb(0, 0, 0);
+p {
+    color: #000;
     font-size: 16px;
     font-weight: bold;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+[data-theme="dark"] p {
+    color: #ffffff;
+}
+
+.table-responsive {
+    overflow-x: auto;
 }
 
 table {
@@ -75,58 +101,77 @@ table {
     margin-top: 20px;
     border-radius: 8px;
     text-align: right;
-    border: 1px solid #eeecec;
     border-collapse: collapse;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.3s, color 0.3s;
 }
 
-tr{
-    background-color: #f9f5f5;
-    color: #3d3d3d;
-    text-align: right;
-    border: 1px solid #eeecec;
-    border-collapse: collapse;
-
+[data-theme="dark"] table {
+    background-color: #1e1e1e;
+    color: #ffffff;
 }
 
 th, td {
-    text-align: right;
-    font-size: 12px;
     padding: 12px;
     text-align: right;
     border: 1px solid #eeecec;
-    border-collapse: collapse;
+}
+
+[data-theme="dark"] th, [data-theme="dark"] td {
+    border-color: #444;
 }
 
 th {
     background-color: #ecebeb;
     color: #DC0001;
+    font-weight: bold;
+}
+
+[data-theme="dark"] th {
+    background-color: #333;
+    color: #DC0001;
+}
+
+tr {
+    background-color: #f9f5f5;
+    color: #3d3d3d;
+}
+
+[data-theme="dark"] tr {
+    background-color: #2d2d2d;
+    color: #ffffff;
 }
 
 tr:hover {
     background-color: #e0e0e0;
 }
 
-.green {
-    color: #4caf50;
+[data-theme="dark"] tr:hover {
+    background-color: #444;
 }
 
-.red {
-    color: #ff5722;
+.crypto-icon {
+    width: 20px;
+    height: 20px;
+    vertical-align: middle;
+    margin-left: 5px;
 }
+
 #refreshButton {
     font-family: "IRANSans";
     background-color: #DC0001;
     color: #f8f6f6;
     border: none;
-    padding: 8px 15px;
-    font-size: 14px;
+    padding: 10px 20px;
+    font-size: 16px;
     cursor: pointer;
     border-radius: 5px;
     margin-top: 20px;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 10px; 
+    gap: 10px;
     margin-left: auto;
     margin-right: auto;
     transition: background-color 0.3s ease;
@@ -147,4 +192,163 @@ tr:hover {
 
 .hidden {
     display: none;
+}
+
+.theme-switch-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin-bottom: 20px;
+}
+
+.theme-switch {
+    display: inline-block;
+    height: 34px;
+    position: relative;
+    width: 60px;
+}
+
+.theme-switch input {
+    display: none;
+}
+
+.slider {
+    background-color: #ccc;
+    bottom: 0;
+    cursor: pointer;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    transition: .4s;
+    border-radius: 34px;
+}
+
+.slider:before {
+    background-color: #fff;
+    bottom: 4px;
+    content: "";
+    height: 26px;
+    left: 4px;
+    position: absolute;
+    transition: .4s;
+    width: 26px;
+    border-radius: 50%;
+}
+
+input:checked + .slider {
+    background-color: #DC0001;
+}
+
+input:checked + .slider:before {
+    transform: translateX(26px);
+}
+
+@media (max-width: 768px) {
+    .container {
+        padding: 10px;
+    }
+
+    h1 {
+        font-size: 20px;
+    }
+
+    img {
+        width: 100px;
+        height: 70px;
+    }
+
+    p {
+        font-size: 14px;
+    }
+
+    th, td {
+        padding: 8px;
+        font-size: 12px;
+    }
+
+    #refreshButton {
+        padding: 8px 15px;
+        font-size: 14px;
+    }
+
+    .rounded-table {
+        border-radius: 12px;
+        overflow: hidden;
+    }
+    .coming-soon-section {
+        margin-top: 40px;
+        padding: 20px;
+        background-color: rgba(255, 255, 255, 0.9);
+        border-radius: 12px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        text-align: center;
+    }
+    
+    [data-theme="dark"] .coming-soon-section {
+        background-color: rgba(18, 18, 18, 0.9);
+        color: #ffffff;
+    }
+    
+    .coming-soon-section h2 {
+        font-size: 24px;
+        color: #DC0001;
+        margin-bottom: 10px;
+    }
+    
+    .coming-soon-section p {
+        font-size: 16px;
+        color: #333;
+        margin-bottom: 20px;
+    }
+    
+    [data-theme="dark"] .coming-soon-section p {
+        color: #ffffff;
+    }
+    
+    .coming-soon-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+        margin-top: 20px;
+    }
+    
+    .coming-soon-card {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    [data-theme="dark"] .coming-soon-card {
+        background-color: #2d2d2d;
+        color: #ffffff;
+    }
+    
+    .coming-soon-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+    
+    .coming-soon-card i {
+        font-size: 40px;
+        color: #DC0001;
+        margin-bottom: 10px;
+    }
+    
+    .coming-soon-card h3 {
+        font-size: 20px;
+        margin-bottom: 10px;
+    }
+    
+    .coming-soon-card p {
+        font-size: 14px;
+        color: #666;
+    }
+    
+    [data-theme="dark"] .coming-soon-card p {
+        color: #ccc;
+    }
 }
