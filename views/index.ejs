@@ -159,7 +159,6 @@
             <tr>
               <th>نام ارز</th>
               <th>قیمت (ریال)</th>
-              <th>تغییرات</th>
               <th>کمترین</th>
               <th>بیشترین</th>
             </tr>
@@ -167,7 +166,6 @@
           <tbody>
             <template v-if="isLoading">
               <tr v-for="n in 5" :key="n">
-                <td><div class="loading-skeleton"></div></td>
                 <td><div class="loading-skeleton"></div></td>
                 <td><div class="loading-skeleton"></div></td>
                 <td><div class="loading-skeleton"></div></td>
@@ -185,7 +183,6 @@
                   {{ item.title }}
                 </td>
                 <td>{{ item.price }}</td>
-                <td>{{ item.change }}</td>
                 <td>{{ item.low }}</td>
                 <td>{{ item.high }}</td>
               </tr>
