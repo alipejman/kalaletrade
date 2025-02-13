@@ -1,216 +1,413 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>قیمت طلا و ارزهای دیجیتال | کلاله ترید</title>
+    <title>نرخ روز | کلاله ترید</title>
     <link rel="stylesheet" href="/styles.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
     <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
-    <style>
-        .loading-skeleton {
-            height: 20px;
-            background: linear-gradient(90deg, #d3d2d2 25%, #faf9f9 50%, #d3d2d2 75%);
-            background-size: 200% 100%;
-            animation: loading 1.5s infinite;
-            margin: 8px 0;
-            border-radius: 10px;
-        }
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/flag-icons/6.6.6/css/flag-icons.min.css"
+    />
 
-        @keyframes loading {
-            0% { background-position: 200% 0; }
-            100% { background-position: 0 0; }
+    <link
+      rel="icon"
+      type="image/png"
+      href="https://kalaletrade.ir/favicon/favicon-96x96.png"
+      sizes="96x96"
+    />
+    <style>
+      .loading-skeleton {
+        height: 20px;
+        background: linear-gradient(
+          90deg,
+          #d3d2d2 25%,
+          #faf9f9 50%,
+          #d3d2d2 75%
+        );
+        background-size: 200% 100%;
+        animation: loading 1.5s infinite;
+        margin: 8px 0;
+        border-radius: 10px;
+      }
+
+      @keyframes loading {
+        0% {
+          background-position: 200% 0;
         }
+        100% {
+          background-position: 0 0;
+        }
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div class="fixed-background"></div>
     <div class="overlay"></div>
     <div id="app" class="container">
-        <div class="theme-switch-wrapper">
-            <label class="theme-switch" for="checkbox">
-                <input type="checkbox" id="checkbox" />
-                <div class="slider round"></div>
-            </label>
-            <span>حالت شب</span>
-        </div>
-        <div class="wrapper-header">
-            <h1>نرخ روز |</h1>
-            <img src="/upsite_1737463211_kalaletrade-profile.png" alt="Kalale Trade Logo">
-        </div>
-        <p>آخرین زمان بروزرسانی: <span id="lastUpdated">{{ lastUpdated }}</span></p>
-        <button id="refreshButton" @click="refreshData">
-            <span id="buttonText">بروزرسانی جدول ها</span>
-            <span id="spinner" class="spinner hidden"><i class="fas fa-spinner fa-spin"></i></span>
-        </button>
+      <div class="theme-switch-wrapper">
+        <label class="theme-switch" for="checkbox">
+          <input type="checkbox" id="checkbox" />
+          <div class="slider round"></div>
+        </label>
+        <span>حالت شب</span>
+      </div>
+      <div class="wrapper-header">
+        <h1>نرخ روز |</h1>
+        <img
+          src="/upsite_1737463211_kalaletrade-profile.png"
+          alt="Kalale Trade Logo"
+        />
+      </div>
+      <p>
+        آخرین زمان بروزرسانی: <span id="lastUpdated">{{ lastUpdated }}</span>
+      </p>
+      <button id="refreshButton" @click="refreshData">
+        <span id="buttonText">بروزرسانی جدول ها</span>
+        <span id="spinner" class="spinner hidden"
+          ><i class="fas fa-spinner fa-spin"></i
+        ></span>
+      </button>
 
-        <h2>قیمت طلا</h2>
-        <div class="table-responsive">
-            <table class="rounded-table">
-                <thead>
-                    <tr>
-                        <th>نام</th>
-                        <th>قیمت (تومان)</th>
-                        <th>تغییرات</th>
-                        <th>حباب (تومان)</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <template v-if="isLoading">
-                        <tr v-for="n in 5" :key="n">
-                            <td><div class="loading-skeleton"></div></td>
-                            <td><div class="loading-skeleton"></div></td>
-                            <td><div class="loading-skeleton"></div></td>
-                            <td><div class="loading-skeleton"></div></td>
-                        </tr>
-                    </template>
-                    <template v-else>
-                        <tr v-for="item in goldData" :key="item.title">
-                            <td>{{ item.title }}</td>
-                            <td>{{ item.price }}</td>
-                            <td>{{ item.change }}</td>
-                            <td>{{ item.bubble }}</td>
-                        </tr>
-                    </template>
-                </tbody>
-            </table>
-        </div>
-
-        <h2>قیمت ارزهای دیجیتال</h2>
-        <div class="table-responsive">
-            <table class="rounded-table">
-                <thead>
-                    <tr>
-                        <th>نام</th>
-                        <th>قیمت (تومان)</th>
-                        <th>قیمت (دلار)</th>
-                        <th>تغییرات</th>
-                    </tr>
-                </thead>
-                <tbody class="crypto">
-                    <template v-if="isLoading">
-                        <tr v-for="n in 5" :key="n">
-                            <td><div class="loading-skeleton"></div></td>
-                            <td><div class="loading-skeleton"></div></td>
-                            <td><div class="loading-skeleton"></div></td>
-                            <td><div class="loading-skeleton"></div></td>
-                        </tr>
-                    </template>
-                    <template v-else>
-                        <tr v-for="item in cryptoData" :key="item.titleEnglish">
-                            <td>
-                                <img :src="getIcon(item.titleEnglish)" alt="Crypto Icon" class="crypto-icon">
-                                {{ item.titlePersian }}
-                            </td>
-                            <td>{{ item.priceToman }}</td>
-                            <td>{{ item.priceDollar }}</td>
-                            <td>{{ item.change }}</td>
-                        </tr>
-                    </template>
-                </tbody>
-            </table>
-        </div>
-
-        <!-- سکشن جدید: جدول‌های بیشتر به زودی -->
-        <div class="coming-soon-section">
-            <h2>جدول‌های بیشتر به زودی...</h2>
-            <p>ما در حال کار بر روی اضافه کردن جدول‌های جدید هستیم. به زودی اطلاعات بیشتری در اختیار شما قرار خواهیم داد.</p>
-            <div class="coming-soon-grid">
-                <div class="coming-soon-card">
-                    <i class="fas fa-chart-line"></i>
-                    <h3>قیمت سکه</h3>
-                    <p>اطلاعات دقیق و به‌روز درباره قیمت سکه.</p>
-                </div>
-                <div class="coming-soon-card">
-                    <i class="fas fa-coins"></i>
-                    <h3>قیمت ارزهای خارجی</h3>
-                    <p>نرخ ارزهای معتبر جهانی به همراه تغییرات.</p>
-                </div>
-                <div class="coming-soon-card">
-                    <i class="fas fa-percentage"></i>
-                    <h3>نرخ بهره بانکی</h3>
-                    <p>اطلاعات کامل درباره نرخ بهره بانک‌ها.</p>
-                </div>
+      <br />
+      <br />
+      <div class="modern-table">
+        <div class="modern-table-row">
+          <div class="modern-table-cell">
+            <img
+              src="/icons/currency/usa.png"
+              alt="Dollar Icon"
+              class="modern-table-icon"
+            />
+            <span>دلار:</span>
+            <div
+              v-if="isLoading"
+              class="loading-skeleton"
+              style="width: 50px; height: 20px; display: inline-block"
+            ></div>
+            <div v-else>
+              <span>{{ importantPrices.dollar }}</span>
             </div>
+          </div>
         </div>
+        <div class="modern-table-row">
+          <div class="modern-table-cell">
+            <img
+              src="/icons/Gold.png"
+              alt="Gold Icon"
+              class="modern-table-icon"
+            />
+            <span>طلا 18:</span>
+            <div
+              v-if="isLoading"
+              class="loading-skeleton"
+              style="width: 50px; height: 20px; display: inline-block"
+            ></div>
+            <div v-else>
+              <span>{{ importantPrices.gold }}</span>
+            </div>
+          </div>
+        </div>
+        <div class="modern-table-row">
+          <div class="modern-table-cell">
+            <img
+              src="/icons/btc.svg"
+              alt="Bitcoin Icon"
+              class="modern-table-icon"
+            />
+            <span>بیت‌کوین:</span>
+            <div
+              v-if="isLoading"
+              class="loading-skeleton"
+              style="width: 50px; height: 20px; display: inline-block"
+            ></div>
+            <div v-else>
+              <span>{{ importantPrices.bitcoin }}</span>
+            </div>
+          </div>
+        </div>
+        <div class="modern-table-row">
+          <div class="modern-table-cell">
+            <img
+              src="/icons/usdt.svg"
+              alt="Tether Icon"
+              class="modern-table-icon"
+            />
+            <span>تتر:</span>
+            <div
+              v-if="isLoading"
+              class="loading-skeleton"
+              style="width: 50px; height: 20px; display: inline-block"
+            ></div>
+            <div v-else>
+              <span>{{ importantPrices.tether }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- جدول ارزها -->
+      <h2>قیمت ارزها</h2>
+      <div class="table-responsive">
+        <table class="rounded-table">
+          <thead>
+            <tr>
+              <th>نام ارز</th>
+              <th>قیمت (ریال)</th>
+              <th>تغییرات</th>
+              <th>کمترین</th>
+              <th>بیشترین</th>
+            </tr>
+          </thead>
+          <tbody>
+            <template v-if="isLoading">
+              <tr v-for="n in 5" :key="n">
+                <td><div class="loading-skeleton"></div></td>
+                <td><div class="loading-skeleton"></div></td>
+                <td><div class="loading-skeleton"></div></td>
+                <td><div class="loading-skeleton"></div></td>
+                <td><div class="loading-skeleton"></div></td>
+              </tr>
+            </template>
+            <template v-else>
+              <tr v-for="item in currencyData" :key="item.title">
+                <td>
+                  <img
+                    :src="getCurrencyIcon(item.title)"
+                    alt="Currency Icon"
+                    class="currency-icon"
+                  />
+                  {{ item.title }}
+                </td>
+                <td>{{ item.price }}</td>
+                <td>{{ item.change }}</td>
+                <td>{{ item.low }}</td>
+                <td>{{ item.high }}</td>
+              </tr>
+            </template>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- جدول طلا -->
+      <h2>قیمت طلا</h2>
+      <div class="table-responsive">
+        <table class="rounded-table">
+          <thead>
+            <tr>
+              <th>نام</th>
+              <th>قیمت (تومان)</th>
+              <th>تغییرات</th>
+              <th>حباب (تومان)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <template v-if="isLoading">
+              <tr v-for="n in 5" :key="n">
+                <td><div class="loading-skeleton"></div></td>
+                <td><div class="loading-skeleton"></div></td>
+                <td><div class="loading-skeleton"></div></td>
+                <td><div class="loading-skeleton"></div></td>
+              </tr>
+            </template>
+            <template v-else>
+              <tr v-for="item in goldData" :key="item.title">
+                <td>
+                  <img
+                    :src="getGoldIcon(item.title)"
+                    alt="Gold Icon"
+                    class="currency-icon"
+                  />
+                  {{ item.title }}
+                </td>
+                <td>{{ item.price }}</td>
+                <td>{{ item.change }}</td>
+                <td>{{ item.bubble }}</td>
+              </tr>
+            </template>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- جدول ارزهای دیجیتال -->
+      <h2>قیمت ارزهای دیجیتال</h2>
+      <div class="table-responsive">
+        <table class="rounded-table">
+          <thead>
+            <tr>
+              <th>نام</th>
+              <th>قیمت (تومان)</th>
+              <th>قیمت (دلار)</th>
+              <th>تغییرات</th>
+            </tr>
+          </thead>
+          <tbody class="crypto">
+            <template v-if="isLoading">
+              <tr v-for="n in 5" :key="n">
+                <td><div class="loading-skeleton"></div></td>
+                <td><div class="loading-skeleton"></div></td>
+                <td><div class="loading-skeleton"></div></td>
+                <td><div class="loading-skeleton"></div></td>
+              </tr>
+            </template>
+            <template v-else>
+              <tr v-for="item in cryptoData" :key="item.titleEnglish">
+                <td>
+                  <img
+                    :src="getIcon(item.titleEnglish)"
+                    alt="Crypto Icon"
+                    class="crypto-icon"
+                  />
+                  {{ item.titlePersian }}
+                </td>
+                <td>{{ item.priceToman }}</td>
+                <td>{{ item.priceDollar }}</td>
+                <td>{{ item.change }}</td>
+              </tr>
+            </template>
+          </tbody>
+        </table>
+      </div>
     </div>
     <script>
-        new Vue({
-            el: "#app",
-            data: {
-                isLoading: true,
-                lastUpdated: "",
-                goldData: [],
-                cryptoData: [],
-            },
-            methods: {
-                async refreshData() {
-                    this.isLoading = true;
-                    try {
-                        const response = await fetch("/refresh");
-                        const data = await response.json();
-                        this.goldData = data.goldData;
-                        this.cryptoData = data.cryptoData;
-                        this.lastUpdated = data.lastUpdated;
-                    } catch (error) {
-                        alert("خطا در بروزرسانی داده‌ها");
-                    } finally {
-                        this.isLoading = false;
-                    }
-                },
-                getIcon(titleEnglish) {
-                    const icons = {
-                        btc: "/icons/btc.svg",
-                        ethereum: "/icons/eth.svg",
-                        ltc: "/icons/ltc.svg",
-                        doge: "/icons/doge.svg",
-                        xmr: "/icons/xmr.svg",
-                        trx: "/icons/trx.svg",
-                        usdt: "/icons/usdt.svg",
-                        bnb: "/icons/bnb.svg",
-                        shiba: "/icons/shib.svg",
-                        ada: "/icons/ada.svg",
-                        bch: "/icons/bch.svg",
-                        dai: "/icons/dai.svg",
-                        etc: "/icons/etc.svg",
-                        uni: "/icons/uni.svg",
-                        link: "/icons/link.svg",
-                    };
-                    for (const key in icons) {
-                        if (titleEnglish.includes(key)) {
-                            return icons[key];
-                        }
-                    }
-                    return "";
-                },
-            },
-            mounted() {
-                this.refreshData();
-            },
-        });
+      new Vue({
+        el: "#app",
+        data: {
+          isLoading: true,
+          lastUpdated: "",
+          currencyData: [],
+          goldData: [],
+          cryptoData: [],
+          importantPrices: {
+            dollar: "",
+            gold: "",
+            bitcoin: "",
+            tether: "",
+          },
+          error: null, // Add this property to store errors
+        },
+        methods: {
+          async refreshData() {
+            this.isLoading = true;
+            this.error = null; // Reset error before making a new request
+            try {
+              const response = await fetch("/refresh");
+              const data = await response.json();
+              this.currencyData = data.currencyData;
+              this.goldData = data.goldData;
+              this.cryptoData = data.cryptoData;
+              this.lastUpdated = data.lastUpdated;
 
-        const toggleSwitch = document.querySelector('.theme-switch input[type="checkbox"]');
-        const currentTheme = localStorage.getItem('theme');
-
-        if (currentTheme) {
-            document.documentElement.setAttribute('data-theme', currentTheme);
-
-            if (currentTheme === 'dark') {
-                toggleSwitch.checked = true;
+              // Populate important prices
+              this.importantPrices.dollar =
+                this.currencyData.find((item) => item.title === "دلار")
+                  ?.price || "N/A";
+              this.importantPrices.gold =
+                this.goldData.find(
+                  (item) => item.title === "یک گرم طلای 18 عیار"
+                )?.price || "N/A";
+              this.importantPrices.bitcoin =
+                this.cryptoData.find((item) => item.titlePersian === "بیت کوین")
+                  ?.priceToman || "N/A";
+              this.importantPrices.tether =
+                this.cryptoData.find((item) => item.titlePersian === "تتر")
+                  ?.priceToman || "N/A";
+            } catch (error) {
+              this.error = error.message;
+            } finally {
+              this.isLoading = false;
             }
-        }
+          },
 
-        function switchTheme(e) {
-            if (e.target.checked) {
-                document.documentElement.setAttribute('data-theme', 'dark');
-                localStorage.setItem('theme', 'dark');
-            } else {
-                document.documentElement.setAttribute('data-theme', 'light');
-                localStorage.setItem('theme', 'light');
+          getCurrencyIcon(title) {
+            const icons = {
+              دلار: "/icons/currency/usa.png",
+              یورو: "/icons/currency/euro.png",
+              "درهم امارات": "/icons/currency/emarates.png",
+              "پوند انگلیس": "/icons/currency/pound.png",
+              "لیر ترکیه": "/icons/currency/turkey.png",
+              "فرانک سوئیس": "/icons/currency/switzerland.png",
+              "یوان چین": "/icons/currency/china.png",
+              "ین ژاپن": "/icons/currency/japan.png",
+              "وون کره جنوبی": "/icons/currency/south-korea.png",
+              "دلار کانادا": "/icons/currency/canada.png",
+              "دلار استرالیا": "icons/currency/australia.png",
+              "دلار نیوزیلند": "icons/currency/new-zealand.png",
+            };
+            return icons[title] || "/icons/default.png"; // اگر آیکون پیدا نشد، رشته خالی برگردانده می‌شود
+          },
+          getGoldIcon(title) {
+            const icons = {
+              "مثقال طلا": "/icons/Gold.png",
+              "یک گرم طلای 18 عیار": "/icons/Gold.png",
+              "سکه امامی": "/icons/Gold.png",
+              "سکه بهار آزادی": "/icons/Gold.png",
+              "نیم سکه": "/icons/Gold.png",
+              "ربع سکه": "/icons/Gold.png",
+              "سکه گرمی": "/icons/Gold.png",
+            };
+            return icons[title] || "/icons/default.png"; // اگر آیکون پیدا نشد، رشته خالی برگردانده می‌شود
+          },
+          getIcon(titleEnglish) {
+            const icons = {
+              btc: "/icons/btc.svg",
+              ethereum: "/icons/eth.svg",
+              ltc: "/icons/ltc.svg",
+              doge: "/icons/doge.svg",
+              xmr: "/icons/xmr.svg",
+              trx: "/icons/trx.svg",
+              usdt: "/icons/usdt.svg",
+              bnb: "/icons/bnb.svg",
+              shiba: "/icons/shib.svg",
+              ada: "/icons/ada.svg",
+              bch: "/icons/bch.svg",
+              dai: "/icons/dai.svg",
+              etc: "/icons/etc.svg",
+              uni: "/icons/uni.svg",
+              link: "/icons/link.svg",
+            };
+            for (const key in icons) {
+              if (titleEnglish.includes(key)) {
+                return icons[key];
+              }
             }
-        }
+            return "";
+          },
+        },
+        mounted() {
+          this.refreshData();
+        },
+      });
 
-        toggleSwitch.addEventListener('change', switchTheme, false);
+      const toggleSwitch = document.querySelector(
+        '.theme-switch input[type="checkbox"]'
+      );
+      const currentTheme = localStorage.getItem("theme");
+
+      if (currentTheme) {
+        document.documentElement.setAttribute("data-theme", currentTheme);
+
+        if (currentTheme === "dark") {
+          toggleSwitch.checked = true;
+        }
+      }
+
+      function switchTheme(e) {
+        if (e.target.checked) {
+          document.documentElement.setAttribute("data-theme", "dark");
+          localStorage.setItem("theme", "dark");
+        } else {
+          document.documentElement.setAttribute("data-theme", "light");
+          localStorage.setItem("theme", "light");
+        }
+      }
+
+      toggleSwitch.addEventListener("change", switchTheme, false);
     </script>
-</body>
+  </body>
 </html>
